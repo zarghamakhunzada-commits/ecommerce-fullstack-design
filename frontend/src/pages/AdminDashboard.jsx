@@ -15,8 +15,8 @@ export default function AdminDashboard() {
   const [price, setPrice] = useState('');
   const [image, setImage] = useState('');
   const [category, setCategory] = useState('');
-  const [countInStock, setCountInStock] = useState('');
-  const [description, setDescription] = useState('');
+  const [stock, setStock] = useState('');
+  const [desc, setDesc] = useState('');
 
   // 1. Fetch all products on load
   const fetchProducts = async () => {
@@ -38,20 +38,25 @@ export default function AdminDashboard() {
     setLoading(true);
     setMessage('');
 
-    const productData = { name, price: Number(price), image, category, countInStock: Number(countInStock), description };
+    // 🔥 Object keys map properly with backend schema (desc, stock)
+    const productData = { 
+      name, 
+      price: Number(price), 
+      image, 
+      category, 
+      stock: Number(stock), 
+      desc 
+    };
 
     try {
       if (isEditing) {
-        // Update product via PUT route
         await axios.put(`http://localhost:5000/api/products/${currentProductId}`, productData);
         setMessage('Product updated successfully!');
       } else {
-        // Create new product via POST route
         await axios.post('http://localhost:5000/api/products', productData);
         setMessage('New Product created successfully!');
       }
       
-      // Reset form fields
       resetForm();
       fetchProducts();
     } catch (err) {
@@ -61,7 +66,7 @@ export default function AdminDashboard() {
     }
   };
 
-  // 3. Edit Handler (Fill fields for update)
+  // 3. Edit Handler (Fills form inputs accurately)
   const editHandler = (product) => {
     setIsEditing(true);
     setCurrentProductId(product._id);
@@ -69,8 +74,8 @@ export default function AdminDashboard() {
     setPrice(product.price);
     setImage(product.image);
     setCategory(product.category);
-    setCountInStock(product.countInStock || 0);
-    setDescription(product.description);
+    setStock(product.stock !== undefined ? product.stock : (product.countInStock || 0));
+    setDesc(product.desc || product.description || '');
   };
 
   // 4. Delete Handler
@@ -93,8 +98,8 @@ export default function AdminDashboard() {
     setPrice('');
     setImage('');
     setCategory('');
-    setCountInStock('');
-    setDescription('');
+    setStock('');
+    setDesc('');
   };
 
   return (
@@ -132,7 +137,7 @@ export default function AdminDashboard() {
               </div>
               <div>
                 <label className="text-xs font-bold text-slate-600 uppercase tracking-wider">Stock Count</label>
-                <input type="number" required value={countInStock} onChange={(e) => setCountInStock(e.target.value)} className="mt-1 w-full bg-slate-50 border border-slate-200 px-4 py-2 rounded-xl text-sm focus:outline-hidden focus:border-slate-900" placeholder="15" />
+                <input type="number" required value={stock} onChange={(e) => setStock(e.target.value)} className="mt-1 w-full bg-slate-50 border border-slate-200 px-4 py-2 rounded-xl text-sm focus:outline-hidden focus:border-slate-900" placeholder="15" />
               </div>
             </div>
 
@@ -148,7 +153,7 @@ export default function AdminDashboard() {
 
             <div>
               <label className="text-xs font-bold text-slate-600 uppercase tracking-wider">Product Specifications</label>
-              <textarea rows="3" required value={description} onChange={(e) => setDescription(e.target.value)} className="mt-1 w-full bg-slate-50 border border-slate-200 px-4 py-2 rounded-xl text-sm focus:outline-hidden focus:border-slate-900" placeholder="Provide raw premium item description details..."></textarea>
+              <textarea rows="3" required value={desc} onChange={(e) => setDesc(e.target.value)} className="mt-1 w-full bg-slate-50 border border-slate-200 px-4 py-2 rounded-xl text-sm focus:outline-hidden focus:border-slate-900" placeholder="Provide raw premium item description details..."></textarea>
             </div>
 
             <div className="flex space-x-2 pt-2">
@@ -181,28 +186,31 @@ export default function AdminDashboard() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 font-medium">
-                {products.map((product) => (
-                  <tr key={product._id} className="hover:bg-slate-50/50 transition-colors">
-                    <td className="px-6 py-3">
-                      <img src={product.image} alt="" className="w-10 h-10 object-cover rounded-lg border border-slate-100" />
-                    </td>
-                    <td className="px-6 py-3 max-w-[180px] truncate text-slate-900 font-semibold">{product.name}</td>
-                    <td className="px-6 py-3 text-slate-600">${product.price}</td>
-                    <td className="px-6 py-3">
-                      <span className={`text-xs px-2.5 py-1 rounded-md font-bold ${product.countInStock > 0 ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-600'}`}>
-                        {product.countInStock || 0} left
-                      </span>
-                    </td>
-                    <td className="px-6 py-3 text-center space-x-2">
-                      <button onClick={() => editHandler(product)} className="text-xs bg-amber-50 hover:bg-amber-100 text-amber-700 px-3 py-1.5 rounded-lg transition-colors">
-                        Edit
-                      </button>
-                      <button onClick={() => deleteHandler(product._id)} className="text-xs bg-red-50 hover:bg-red-100 text-red-600 px-3 py-1.5 rounded-lg transition-colors">
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                {products.map((product) => {
+                  const itemStock = product.stock !== undefined ? product.stock : (product.countInStock || 0);
+                  return (
+                    <tr key={product._id} className="hover:bg-slate-50/50 transition-colors">
+                      <td className="px-6 py-3">
+                        <img src={product.image} alt="" className="w-10 h-10 object-cover rounded-lg border border-slate-100" />
+                      </td>
+                      <td className="px-6 py-3 max-w-[180px] truncate text-slate-900 font-semibold">{product.name}</td>
+                      <td className="px-6 py-3 text-slate-600">${product.price}</td>
+                      <td className="px-6 py-3">
+                        <span className={`text-xs px-2.5 py-1 rounded-md font-bold ${itemStock > 0 ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-600'}`}>
+                          {itemStock} left
+                        </span>
+                      </td>
+                      <td className="px-6 py-3 text-center space-x-2">
+                        <button onClick={() => editHandler(product)} className="text-xs bg-amber-50 hover:bg-amber-100 text-amber-700 px-3 py-1.5 rounded-lg transition-colors">
+                          Edit
+                        </button>
+                        <button onClick={() => deleteHandler(product._id)} className="text-xs bg-red-50 hover:bg-red-100 text-red-600 px-3 py-1.5 rounded-lg transition-colors">
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>

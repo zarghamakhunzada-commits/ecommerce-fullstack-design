@@ -1,5 +1,5 @@
 import express from 'express';
-import Product from './models/ProductModel.js'; // 🔥 Apne folder structure ke mutabiq path check kar lena
+import Product from './models/ProductModel.js'; 
 
 const router = express.Router();
 
@@ -39,11 +39,14 @@ router.get('/:id', async (req, res) => {
 // ==========================================
 router.post('/', async (req, res) => {
   try {
-    const { name, price, category, image, desc, stock } = req.body;
+    const { name, price, category, image, desc, description, stock, countInStock } = req.body;
 
-    // Validation check ke koi field khali na ho
-    if (!name || !price || !category || !image || !desc) {
-      return res.status(400).json({ message: "Bhaya, saare fields required hain" });
+    // Flexible mapping taake frontend ki koi bhi field miss na ho
+    const finalDesc = desc || description;
+    const finalStock = stock !== undefined ? stock : (countInStock !== undefined ? countInStock : 10);
+
+    if (!name || !price || !category || !image || !finalDesc) {
+      return res.status(400).json({ message: "Saare fields required hain" });
     }
 
     const newProduct = new Product({
@@ -51,8 +54,8 @@ router.post('/', async (req, res) => {
       price,
       category,
       image,
-      desc,
-      stock: stock || 10 // Agar stock na bheja jaye to default 10 set hoga
+      desc: finalDesc,
+      stock: finalStock
     });
 
     const savedProduct = await newProduct.save();
@@ -68,15 +71,18 @@ router.post('/', async (req, res) => {
 // ==========================================
 router.put('/:id', async (req, res) => {
   try {
+    const { name, price, category, image, desc, description, stock, countInStock } = req.body;
     const product = await Product.findById(req.params.id);
 
     if (product) {
-      product.name = req.body.name || product.name;
-      product.price = req.body.price || product.price;
-      product.category = req.body.category || product.category;
-      product.image = req.body.image || product.image;
-      product.desc = req.body.desc || product.desc;
-      product.stock = req.body.stock !== undefined ? req.body.stock : product.stock;
+      product.name = name || product.name;
+      product.price = price !== undefined ? price : product.price;
+      product.category = category || product.category;
+      product.image = image || product.image;
+      
+      // 🔥 Description aur Stock ki accurate mapping schema ke mutabiq
+      product.desc = desc || description || product.desc;
+      product.stock = stock !== undefined ? stock : (countInStock !== undefined ? countInStock : product.stock);
 
       const updatedProduct = await product.save();
       res.json(updatedProduct);
