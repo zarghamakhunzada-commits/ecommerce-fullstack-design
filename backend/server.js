@@ -1,3 +1,4 @@
+import userRoutes from './userRoutes.js';
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -36,6 +37,7 @@ app.get('/', (req, res) => {
 // ==========================================
 // Ab get, post, put, delete saare routing requests automatic productRoutes handle karega
 app.use('/api/products', productRoutes); 
+app.use('/api/users', userRoutes);
 
 // Port Execution
 const PORT = process.env.PORT || 5000;
