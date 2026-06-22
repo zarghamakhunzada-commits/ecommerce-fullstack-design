@@ -10,7 +10,8 @@ export default function Home() {
     const fetchFeaturedProducts = async () => {
       try {
         // 🔥 Backend api se products ka array mangwaya
-        const { data } = await axios.get('https://mazacart-backend.vercel.app//api/products');
+        const { data } = await axios.get('https://mazacart-backend.vercel.app/api
+/products');
         
         // Shuru ke pehle 4 products ko featured section mein dikhane ke liye slice kiya
         setProducts(data.slice(0, 4));

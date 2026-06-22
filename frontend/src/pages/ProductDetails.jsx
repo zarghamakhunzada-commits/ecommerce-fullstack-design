@@ -14,7 +14,8 @@ export default function ProductDetails() {
     const fetchProductDetails = async () => {
       try {
         // Backend ka single product wala endpoint hit kiya database _id bhej kar
-        const { data } = await axios.get(`https://mazacart-backend.vercel.app//api/products/${id}`);
+        const { data } = await axios.get(`https://mazacart-backend.vercel.app/api
+/products/${id}`);
         setProduct(data);
         setLoading(false);
       } catch (error) {

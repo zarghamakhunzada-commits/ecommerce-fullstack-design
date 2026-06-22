@@ -18,7 +18,8 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const { data } = await axios.post('https://mazacart-backend.vercel.app//api/users/login', { email, password });
+      const { data } = await axios.post('https://mazacart-backend.vercel.app/api
+/users/login', { email, password });
       login(data); // Context aur localStorage mein user save ho gaya
       setLoading(false);
       

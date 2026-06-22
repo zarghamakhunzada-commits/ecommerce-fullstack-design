@@ -11,7 +11,8 @@ export default function ProductListing() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const { data } = await axios.get('https://mazacart-backend.vercel.app//api/products');
+        const { data } = await axios.get('https://mazacart-backend.vercel.app/api
+/products');
         setProducts(data); // Database se aaya hua data state mein save kiya
         setLoading(false);  // Loading khatam
       } catch (error) {

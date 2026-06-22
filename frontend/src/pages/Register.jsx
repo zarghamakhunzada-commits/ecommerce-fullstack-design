@@ -24,7 +24,8 @@ export default function Register() {
 
     setLoading(true);
     try {
-      const { data } = await axios.post('https://mazacart-backend.vercel.app//api/users/register', { name, email, password });
+      const { data } = await axios.post('https://mazacart-backend.vercel.app/api
+/users/register', { name, email, password });
       login(data); // Account bante hi user data local storage mein save aur automatic login
       setLoading(false);
       navigate('/'); // Redirect to Home page
