@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import axios from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 
@@ -18,12 +19,11 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const { data } = await axios.post('https://mazacart-backend.vercel.app/api
-/users/login', { email, password });
-      login(data); // Context aur localStorage mein user save ho gaya
+      // 🔥 URL Fix: Line break khatam karke ek line mein kar diya hai
+      const { data } = await axios.post('https://mazacart-backend.vercel.app/api/users/login', { email, password });
+      login(data); 
       setLoading(false);
       
-      // 🔥 Agar admin hai to admin panel bhejo, warna home page
       if (data.isAdmin) {
         navigate('/admin');
       } else {

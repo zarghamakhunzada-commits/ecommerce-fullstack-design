@@ -24,11 +24,11 @@ export default function Register() {
 
     setLoading(true);
     try {
-      const { data } = await axios.post('https://mazacart-backend.vercel.app/api
-/users/register', { name, email, password });
-      login(data); // Account bante hi user data local storage mein save aur automatic login
+      // 🔥 URL Fixed: Ek line mein straight kar diya
+      const { data } = await axios.post('https://mazacart-backend.vercel.app/api/users/register', { name, email, password });
+      login(data); 
       setLoading(false);
-      navigate('/'); // Redirect to Home page
+      navigate('/'); 
     } catch (err) {
       setLoading(false);
       setError(err.response && err.response.data.message ? err.response.data.message : err.message);

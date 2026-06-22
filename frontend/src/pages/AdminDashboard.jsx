@@ -21,8 +21,8 @@ export default function AdminDashboard() {
   // 1. Fetch all products on load
   const fetchProducts = async () => {
     try {
-      const { data } = await axios.get('https://mazacart-backend.vercel.app/api
-/products');
+      // 🔥 URL Fixed: Ek line mein straight kar diya
+      const { data } = await axios.get('https://mazacart-backend.vercel.app/api/products');
       setProducts(data);
     } catch (err) {
       console.error("Error fetching products", err);
@@ -39,7 +39,6 @@ export default function AdminDashboard() {
     setLoading(true);
     setMessage('');
 
-    // 🔥 Object keys map properly with backend schema (desc, stock)
     const productData = { 
       name, 
       price: Number(price), 
@@ -51,12 +50,12 @@ export default function AdminDashboard() {
 
     try {
       if (isEditing) {
-        await axios.put(`https://mazacart-backend.vercel.app/api
-/products/${currentProductId}`, productData);
+        // 🔥 URL Fixed
+        await axios.put(`https://mazacart-backend.vercel.app/api/products/${currentProductId}`, productData);
         setMessage('Product updated successfully!');
       } else {
-        await axios.post('https://mazacart-backend.vercel.app/api
-/products', productData);
+        // 🔥 URL Fixed
+        await axios.post('https://mazacart-backend.vercel.app/api/products', productData);
         setMessage('New Product created successfully!');
       }
       
@@ -69,7 +68,7 @@ export default function AdminDashboard() {
     }
   };
 
-  // 3. Edit Handler (Fills form inputs accurately)
+  // 3. Edit Handler
   const editHandler = (product) => {
     setIsEditing(true);
     setCurrentProductId(product._id);
@@ -85,8 +84,8 @@ export default function AdminDashboard() {
   const deleteHandler = async (id) => {
     if (window.confirm('Are you absolutely sure you want to delete this product from the master database?')) {
       try {
-        await axios.delete(`https://mazacart-backend.vercel.app/api
-/products/${id}`);
+        // 🔥 URL Fixed
+        await axios.delete(`https://mazacart-backend.vercel.app/api/products/${id}`);
         setMessage('Product deleted from active list.');
         fetchProducts();
       } catch (err) {
@@ -122,7 +121,6 @@ export default function AdminDashboard() {
       )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Left Column: Management UI Form */}
         <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs h-fit">
           <h2 className="text-lg font-bold text-slate-900 mb-4">
             {isEditing ? '✏️ Edit Existing Product' : '➕ Add Premium Product'}
@@ -173,7 +171,6 @@ export default function AdminDashboard() {
           </form>
         </div>
 
-        {/* Right Column: Live Table Management Stream */}
         <div className="lg:col-span-2 bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
           <div className="px-6 py-4 border-b border-slate-100">
             <h2 className="font-bold text-slate-900">📦 Active Product Stock Catalog ({products.length})</h2>

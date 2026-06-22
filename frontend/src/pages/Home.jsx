@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios'; // 🔥 Axios import kiya database se products lane ke liye
+import axios from 'axios'; 
 
 export default function Home() {
-  const [products, setProducts] = useState([]); // Live products state
-  const [loading, setLoading] = useState(true); // Loading handling
+  const [products, setProducts] = useState([]); 
+  const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
     const fetchFeaturedProducts = async () => {
       try {
-        // 🔥 Backend api se products ka array mangwaya
-        const { data } = await axios.get('https://mazacart-backend.vercel.app/api
-/products');
+        // 🔥 URL Fix: Line break mita kar straight line kar di hai
+        const { data } = await axios.get('https://mazacart-backend.vercel.app/api/products');
         
-        // Shuru ke pehle 4 products ko featured section mein dikhane ke liye slice kiya
         setProducts(data.slice(0, 4));
         setLoading(false);
       } catch (error) {
@@ -28,7 +26,7 @@ export default function Home() {
   return (
     <div className="space-y-12">
       
-      {/* 1. HERO BANNER SECTION */}
+      {/* HERO BANNER SECTION */}
       <section className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-2xl p-8 md:p-16 flex flex-col md:flex-row items-center justify-between shadow-md">
         <div className="space-y-4 max-w-xl text-center md:text-left">
           <span className="bg-blue-500 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
@@ -55,7 +53,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 2. FEATURED PRODUCTS GRID */}
+      {/* FEATURED PRODUCTS GRID */}
       <section className="space-y-6">
         <div className="flex justify-between items-center">
           <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900">Featured Products</h2>
@@ -64,7 +62,6 @@ export default function Home() {
           </Link>
         </div>
 
-        {/* Loading Spinner Skeleton */}
         {loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[1, 2, 3, 4].map((n) => (
@@ -79,20 +76,17 @@ export default function Home() {
             ))}
           </div>
         ) : (
-          /* Dynamic Grid loaded from MongoDB */
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {products.map((product) => (
-              /* 🔥 key aur map routing mein id ki jagah _id replace kar di */
               <div key={product._id} className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col">
                 
-                {/* Product Image */}
                 <div className="h-48 bg-slate-100 overflow-hidden relative">
                   <img 
-                    src={product.image || "https://images.unsplash.com/photo-1531403009284-440f080d1e12?w=500"} // Safe image fallback link
+                    src={product.image || "https://images.unsplash.com/photo-1531403009284-440f080d1e12?w=500"} 
                     alt={product.name} 
                     className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                     onError={(e) => {
-                      e.target.src = "https://images.unsplash.com/photo-1531403009284-440f080d1e12?w=500"; // Broken links handler
+                      e.target.src = "https://images.unsplash.com/photo-1531403009284-440f080d1e12?w=500"; 
                     }}
                   />
                   <span className="absolute top-2 left-2 bg-white/90 backdrop-blur-xs text-slate-800 text-xs font-semibold px-2 py-1 rounded-md shadow-xs">
@@ -100,17 +94,14 @@ export default function Home() {
                   </span>
                 </div>
 
-                {/* Product Details */}
                 <div className="p-4 flex-1 flex flex-col justify-between space-y-4">
                   <div>
                     <h3 className="font-bold text-slate-800 text-base line-clamp-1 hover:text-blue-600">
-                      {/* 🔥 Link path dynamic _id ke sath set kiya */}
                       <Link to={`/product/${product._id}`}>{product.name}</Link>
                     </h3>
                     <p className="text-xl font-extrabold text-slate-900 mt-1">${product.price}.00</p>
                   </div>
 
-                  {/* Card Button */}
                   <Link 
                     to={`/product/${product._id}`}
                     className="w-full text-center bg-slate-900 text-white font-medium py-2 rounded-lg hover:bg-blue-600 transition-colors text-sm"

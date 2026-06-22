@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios'; 
-import { useCart } from '../context/CartContext'; // 🔥 1. Cart Context Hook import kiya
+import { useCart } from '../context/CartContext'; 
 
 export default function ProductDetails() {
-  const { id } = useParams(); // URL se database ki _id nikali
-  const [product, setProduct] = useState(null); // Single product state
-  const [loading, setLoading] = useState(true); // Loading state
+  const { id } = useParams(); 
+  const [product, setProduct] = useState(null); 
+  const [loading, setLoading] = useState(true); 
   
-  const { addToCart } = useCart(); // 🔥 2. Context se addToCart function bahar nikala
+  const { addToCart } = useCart(); 
 
   useEffect(() => {
     const fetchProductDetails = async () => {
       try {
-        // Backend ka single product wala endpoint hit kiya database _id bhej kar
-        const { data } = await axios.get(`https://mazacart-backend.vercel.app/api
-/products/${id}`);
+        // 🔥 URL Fixed: Ek line mein merge kar diya
+        const { data } = await axios.get(`https://mazacart-backend.vercel.app/api/products/${id}`);
         setProduct(data);
         setLoading(false);
       } catch (error) {
@@ -27,7 +26,6 @@ export default function ProductDetails() {
     fetchProductDetails();
   }, [id]);
 
-  // Loading Screen
   if (loading) {
     return (
       <div className="min-h-screen bg-slate-50 flex flex-col justify-center items-center">
@@ -37,7 +35,6 @@ export default function ProductDetails() {
     );
   }
 
-  // Agar product database mein na mile
   if (!product) {
     return (
       <div className="min-h-screen bg-slate-50 flex flex-col justify-center items-center p-4">
@@ -57,7 +54,6 @@ export default function ProductDetails() {
       </Link>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 bg-white rounded-3xl p-6 md:p-10 shadow-sm border border-slate-100">
-        {/* Left Column: Product Image */}
         <div className="bg-slate-50 rounded-2xl overflow-hidden h-[450px]">
           <img 
             src={product.image} 
@@ -66,7 +62,6 @@ export default function ProductDetails() {
           />
         </div>
 
-        {/* Right Column: Product Details Content */}
         <div className="flex flex-col justify-between">
           <div>
             <span className="text-xs font-bold uppercase tracking-widest text-blue-600 bg-blue-50 px-3 py-1.5 rounded-md">
@@ -85,9 +80,7 @@ export default function ProductDetails() {
             </p>
           </div>
 
-          {/* Actions */}
           <div className="mt-8 gap-4 flex flex-col sm:flex-row">
-            {/* 🔥 3. Add to Cart button par click event lagaya aur object pass kiya */}
             <button 
               onClick={() => addToCart(product)}
               className="flex-1 bg-slate-900 hover:bg-slate-800 text-white font-semibold py-3.5 px-6 rounded-xl transition text-sm tracking-wide shadow-sm active:scale-95"
