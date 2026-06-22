@@ -14,7 +14,7 @@ export default function ProductDetails() {
     const fetchProductDetails = async () => {
       try {
         // 🔥 URL Fixed: Ek line mein merge kar diya
-        const { data } = await axios.get(`https://mazacart-backend.vercel.app/api/products/${id}`);
+        const { data } = await axios.get(`'https://mazacart-backend.vercel.app/api/products'/products/${id}`);
         setProduct(data);
         setLoading(false);
       } catch (error) {

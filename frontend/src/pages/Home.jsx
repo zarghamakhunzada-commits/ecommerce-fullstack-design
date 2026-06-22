@@ -10,7 +10,7 @@ export default function Home() {
     const fetchFeaturedProducts = async () => {
       try {
         // 🔥 URL Fix: Line break mita kar straight line kar di hai
-        const { data } = await axios.get('https://mazacart-backend.vercel.app/api/products');
+        const { data } = await axios.get(''https://mazacart-backend.vercel.app/api/products'/products');
         
         setProducts(data.slice(0, 4));
         setLoading(false);

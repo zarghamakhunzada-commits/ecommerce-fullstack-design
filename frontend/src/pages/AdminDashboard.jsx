@@ -22,7 +22,7 @@ export default function AdminDashboard() {
   const fetchProducts = async () => {
     try {
       // 🔥 URL Fixed: Ek line mein straight kar diya
-      const { data } = await axios.get('https://mazacart-backend.vercel.app/api/products');
+      const { data } = await axios.get(''https://mazacart-backend.vercel.app/api/products'/products');
       setProducts(data);
     } catch (err) {
       console.error("Error fetching products", err);
@@ -51,11 +51,11 @@ export default function AdminDashboard() {
     try {
       if (isEditing) {
         // 🔥 URL Fixed
-        await axios.put(`https://mazacart-backend.vercel.app/api/products/${currentProductId}`, productData);
+        await axios.put(`'https://mazacart-backend.vercel.app/api/products'/products/${currentProductId}`, productData);
         setMessage('Product updated successfully!');
       } else {
         // 🔥 URL Fixed
-        await axios.post('https://mazacart-backend.vercel.app/api/products', productData);
+        await axios.post(''https://mazacart-backend.vercel.app/api/products'/products', productData);
         setMessage('New Product created successfully!');
       }
       
@@ -85,7 +85,7 @@ export default function AdminDashboard() {
     if (window.confirm('Are you absolutely sure you want to delete this product from the master database?')) {
       try {
         // 🔥 URL Fixed
-        await axios.delete(`https://mazacart-backend.vercel.app/api/products/${id}`);
+        await axios.delete(`'https://mazacart-backend.vercel.app/api/products'/products/${id}`);
         setMessage('Product deleted from active list.');
         fetchProducts();
       } catch (err) {
