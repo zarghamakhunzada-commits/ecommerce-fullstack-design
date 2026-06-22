@@ -3,7 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
-import productRoutes from './productRoutes.js'; // 🔥 1. Nayi Product Routes file ko import kiya
+import productRoutes from './productRoutes.js'; 
 
 // Configuration Load
 dotenv.config();
@@ -11,7 +11,13 @@ dotenv.config();
 const app = express();
 
 // Middlewares
-app.use(cors());
+// 🔥 CORS Fixed: Live frontend domain ko access allow kar diya hai
+app.use(cors({
+  origin: ["https://mazacart-frontend.vercel.app", "http://localhost:5173", "http://localhost:3000"],
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE"]
+}));
+
 app.use(express.json()); // Body parser taake POST/PUT requests ka data read ho sake
 
 // MongoDB Connection Logic
@@ -35,7 +41,6 @@ app.get('/', (req, res) => {
 // ==========================================
 // 🔥 PRODUCT CRUD MIDDLEWARE INTEGRATION
 // ==========================================
-// Ab get, post, put, delete saare routing requests automatic productRoutes handle karega
 app.use('/api/products', productRoutes); 
 app.use('/api/users', userRoutes);
 
