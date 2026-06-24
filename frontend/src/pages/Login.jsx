@@ -18,7 +18,7 @@ export default function Login() {
     setLoading(true);
 
     try {
-      // ✅ Fixed extra quotes and endpoint route
+      // ✅ URL Fixed: Double slashes hataye gae hain
       const { data } = await axios.post('https://mazacart-backend.vercel.app/api/users/login', { email, password });
       login(data); 
       setLoading(false);

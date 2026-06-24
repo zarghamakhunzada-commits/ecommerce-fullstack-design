@@ -24,7 +24,7 @@ export default function Register() {
 
     setLoading(true);
     try {
-      // ✅ Fixed URL syntax and endpoints
+      // ✅ URL Fixed: Ek single quote aur single slash structure ke sath
       const { data } = await axios.post('https://mazacart-backend.vercel.app/api/users/register', { name, email, password });
       login(data); 
       setLoading(false);

@@ -21,7 +21,7 @@ export default function AdminDashboard() {
   // 1. Fetch all products on load
   const fetchProducts = async () => {
     try {
-      // ✅ Fixed duplicated route string structure
+      // ✅ URL Fixed
       const { data } = await axios.get('https://mazacart-backend.vercel.app/api/products');
       setProducts(data);
     } catch (err) {
@@ -36,7 +36,7 @@ export default function AdminDashboard() {
   // 2. Submit Handle (Create or Update Product)
   const submitHandler = async (e) => {
     e.preventDefault();
-    loading(true);
+    setLoading(true);
     setMessage('');
 
     const productData = { 
@@ -50,11 +50,11 @@ export default function AdminDashboard() {
 
     try {
       if (isEditing) {
-        // ✅ Fixed template literal and single quote syntax
+        // ✅ URL Fixed Template Literal syntax
         await axios.put(`https://mazacart-backend.vercel.app/api/products/${currentProductId}`, productData);
         setMessage('Product updated successfully!');
       } else {
-        // ✅ Fixed operational route string
+        // ✅ URL Fixed post route
         await axios.post('https://mazacart-backend.vercel.app/api/products', productData);
         setMessage('New Product created successfully!');
       }
@@ -84,7 +84,7 @@ export default function AdminDashboard() {
   const deleteHandler = async (id) => {
     if (window.confirm('Are you absolutely sure you want to delete this product from the master database?')) {
       try {
-        // ✅ Fixed absolute delete string syntax
+        // ✅ URL Fixed delete route
         await axios.delete(`https://mazacart-backend.vercel.app/api/products/${id}`);
         setMessage('Product deleted from active list.');
         fetchProducts();
