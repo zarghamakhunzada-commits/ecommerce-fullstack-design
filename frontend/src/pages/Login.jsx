@@ -18,8 +18,8 @@ export default function Login() {
     setLoading(true);
 
     try {
-      // 🔥 URL Fix: Line break khatam karke ek line mein kar diya hai
-      const { data } = await axios.post(''https://mazacart-backend.vercel.app/api/products'/users/login', { email, password });
+      // ✅ Fixed extra quotes and endpoint route
+      const { data } = await axios.post('https://mazacart-backend.vercel.app/api/users/login', { email, password });
       login(data); 
       setLoading(false);
       

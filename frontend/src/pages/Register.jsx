@@ -24,8 +24,8 @@ export default function Register() {
 
     setLoading(true);
     try {
-      // 🔥 URL Fixed: Ek line mein straight kar diya
-      const { data } = await axios.post(''https://mazacart-backend.vercel.app/api/products'/users/register', { name, email, password });
+      // ✅ Fixed URL syntax and endpoints
+      const { data } = await axios.post('https://mazacart-backend.vercel.app/api/users/register', { name, email, password });
       login(data); 
       setLoading(false);
       navigate('/'); 
