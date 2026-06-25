@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import axios from 'axios'; 
+import axios from 'react-router-dom'; 
 import { useCart } from '../context/CartContext'; 
 
 export default function ProductDetails() {
@@ -13,8 +13,8 @@ export default function ProductDetails() {
   useEffect(() => {
     const fetchProductDetails = async () => {
       try {
-        // 🔥 URL Fixed: Ek line mein merge kar diya
-        const { data } = await axios.get(`'https://mazacart-backend.vercel.app/api/products'/products/${id}`);
+        // ✅ URL Configured Dynamically via Environment Variables
+        const { data } = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/products/${id}`);
         setProduct(data);
         setLoading(false);
       } catch (error) {

@@ -1,9 +1,9 @@
-import userRoutes from './userRoutes.js';
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import productRoutes from './productRoutes.js'; 
+import userRoutes from './userRoutes.js';
 
 // Configuration Load
 dotenv.config();
@@ -11,14 +11,19 @@ dotenv.config();
 const app = express();
 
 // Middlewares
-// 🔥 CORS Fixed: Live frontend domain ko access allow kar diya hai
+// 🔥 CORS Configuration: Local aur Live dono ports ko fully allow kar diya hai
 app.use(cors({
-  origin: ["https://mazacart-frontend.vercel.app", "http://localhost:5173", "http://localhost:3000"],
+  origin: [
+    "https://mazacart-frontend.vercel.app", 
+    "http://localhost:5173", 
+    "http://localhost:5174", // 👈 Aapka current active local port
+    "http://localhost:3000"
+  ],
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE"]
 }));
 
-app.use(express.json()); // Body parser taake POST/PUT requests ka data read ho sake
+app.use(express.json()); // Body parser taake JSON request read ho sake
 
 // MongoDB Connection Logic
 const connectDB = async () => {
@@ -38,9 +43,7 @@ app.get('/', (req, res) => {
   res.send('MazaCart Backend Server is Running Successfully! 🚀');
 });
 
-// ==========================================
-// 🔥 PRODUCT CRUD MIDDLEWARE INTEGRATION
-// ==========================================
+// Routes Middleware Integration
 app.use('/api/products', productRoutes); 
 app.use('/api/users', userRoutes);
 

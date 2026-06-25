@@ -10,8 +10,8 @@ export default function ProductListing() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        // ✅ URL Fixed: `vercel.app/api/products` direct fetch endpoint
-        const { data } = await axios.get('https://mazacart-backend.vercel.app/api/products');
+        // ✅ URL Configured Dynamically via Environment Variables
+        const { data } = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/products`);
         setProducts(data); 
         setLoading(false);  
       } catch (error) {

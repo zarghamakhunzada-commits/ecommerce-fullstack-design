@@ -21,8 +21,8 @@ export default function AdminDashboard() {
   // 1. Fetch all products on load
   const fetchProducts = async () => {
     try {
-      // ✅ URL Fixed
-      const { data } = await axios.get('https://mazacart-backend.vercel.app/api/products');
+      // ✅ URL Configured Dynamically via Environment Variables
+      const { data } = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/products`);
       setProducts(data);
     } catch (err) {
       console.error("Error fetching products", err);
@@ -50,12 +50,12 @@ export default function AdminDashboard() {
 
     try {
       if (isEditing) {
-        // ✅ URL Fixed Template Literal syntax
-        await axios.put(`https://mazacart-backend.vercel.app/api/products/${currentProductId}`, productData);
+        // ✅ URL Configured Dynamically via Environment Variables (PUT)
+        await axios.put(`${import.meta.env.VITE_API_BASE_URL}/api/products/${currentProductId}`, productData);
         setMessage('Product updated successfully!');
       } else {
-        // ✅ URL Fixed post route
-        await axios.post('https://mazacart-backend.vercel.app/api/products', productData);
+        // ✅ URL Configured Dynamically via Environment Variables (POST)
+        await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/products`, productData);
         setMessage('New Product created successfully!');
       }
       
@@ -84,8 +84,8 @@ export default function AdminDashboard() {
   const deleteHandler = async (id) => {
     if (window.confirm('Are you absolutely sure you want to delete this product from the master database?')) {
       try {
-        // ✅ URL Fixed delete route
-        await axios.delete(`https://mazacart-backend.vercel.app/api/products/${id}`);
+        // ✅ URL Configured Dynamically via Environment Variables (DELETE)
+        await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/api/products/${id}`);
         setMessage('Product deleted from active list.');
         fetchProducts();
       } catch (err) {

@@ -18,8 +18,8 @@ export default function Login() {
     setLoading(true);
 
     try {
-      // ✅ URL Fixed: Double slashes hataye gae hain
-      const { data } = await axios.post('https://mazacart-backend.vercel.app/api/users/login', { email, password });
+      // ✅ URL Configured Dynamically via Environment Variables
+      const { data } = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/users/login`, { email, password });
       login(data); 
       setLoading(false);
       
